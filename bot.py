@@ -20,11 +20,13 @@ def add(message):
 	cid = message.chat.id
 	credit[cid] = 0
 	debit[cid] = 0
+	person+=1
 	bot.reply_to(message, "Welcome"+ message.from_user)
 
 @bot.message_handler(commands=['summary'])
 def summary(message):
-	bot.reply_to(message, "Amount:"+amount+"	person:"+person+" credit:"+credit+"	debit:"+debit)
+	str= "Amount:"+amount+"	person:"+person+" credit:"+credit+"	debit:"+debit
+	bot.reply_to(message,str)
 
 @bot.message_handler(commands=['help'])
 def send_help(message):
