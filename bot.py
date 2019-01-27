@@ -1,26 +1,77 @@
-import telebot
+
+
+# This example show how to write an inline mode telegram bot use pyTelegramBotAPI.
+import logging
+import sys
 import time
 
-TOKEN = '766072158:AAHbGg4FynSbXDQAqLkdTfouHkjhMKvh--k'
+import telebot
+from telebot import types
 
-def listener(messages):
-    """
-    When new messages arrive TeleBot will call this function.
-    """
-    for m in messages:
-        chatid = m.chat.id
-        if m.content_type == 'text':
-            text = m.text
-            tb.send_message(chatid, text)
+API_TOKEN = '766072158:AAHbGg4FynSbXDQAqLkdTfouHkjhMKvh--k'
 
 
-tb = telebot.TeleBot(TOKEN)
-tb.set_update_listener(listener) #register listener
-tb.polling()
-#Use none_stop flag let polling will not stop when get new message occur error.
-tb.polling(none_stop=True)
-# Interval setup. Sleep 3 secs between request new message.
-tb.polling(interval=3)
+bot = telebot.TeleBot(API_TOKEN)
+telebot.logger.setLevel(logging.DEBUG)
 
-while True: # Don't let the main Thread end.
-    pass
+
+@bot.inline_handler(lambda query: query.query == 'text')
+def query_text(inline_query):
+    try:
+        r = types.InlineQueryResultArticle('1', 'Result1', types.InputTextMessageContent('hi'))
+        r2 = types.InlineQueryResultArticle('2', 'Result2', types.InputTextMessageContent('hi'))
+        bot.answer_inline_query(inline_query.id, [r, r2])
+    except Exception as e:
+        print(e)
+
+
+@bot.inline_handler(lambda query: query.query == 'photo1')
+def query_photo(inline_query):
+    try:
+        r = types.InlineQueryResultPhoto('1',
+                                         'https://raw.githubusercontent.com/eternnoir/pyTelegramBotAPI/master/examples/detailed_example/kitten.jpg',
+                                         'https://raw.githubusercontent.com/eternnoir/pyTelegramBotAPI/master/examples/detailed_example/kitten.jpg',
+                                         input_message_content=types.InputTextMessageContent('hi'))
+        r2 = types.InlineQueryResultPhoto('2',
+                                          'https://raw.githubusercontent.com/eternnoir/pyTelegramBotAPI/master/examples/detailed_example/rooster.jpg',
+                                          'https://raw.githubusercontent.com/eternnoir/pyTelegramBotAPI/master/examples/detailed_example/rooster.jpg')
+        bot.answer_inline_query(inline_query.id, [r, r2], cache_time=1)
+    except Exception as e:
+        print(e)
+
+
+@bot.inline_handler(lambda query: query.query == 'video')
+def query_video(inline_query):
+    try:
+        r = types.InlineQueryResultVideo('1',
+                                         'https://github.com/eternnoir/pyTelegramBotAPI/blob/master/tests/test_data/test_video.mp4?raw=true',
+                                         'video/mp4', 'Video',
+                                         'https://raw.githubusercontent.com/eternnoir/pyTelegramBotAPI/master/examples/detailed_example/rooster.jpg',
+                                         'Title'
+                                         )
+        bot.answer_inline_query(inline_query.id, [r])
+    except Exception as e:
+        print(e)
+
+
+@bot.inline_handler(lambda query: len(query.query) is 0)
+def default_query(inline_query):
+    try:
+        r = types.InlineQueryResultArticle('1', 'default', types.InputTextMessageContent('default'))
+        bot.answer_inline_query(inline_query.id, [r])
+    except Exception as e:
+        print(e)
+
+
+def main_loop():
+    bot.polling(True)
+    while 1:
+        time.sleep(3)
+
+
+if __name__ == '__main__':
+    try:
+        main_loop()
+    except KeyboardInterrupt:
+        print('\nExiting by user request.\n')
+        sys.exit(0)
