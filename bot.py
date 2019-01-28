@@ -3,10 +3,10 @@ import time
 
 TOKEN = '766072158:AAHbGg4FynSbXDQAqLkdTfouHkjhMKvh--k'
 
-amount=0
-person=0
-credit={}
-debit={}
+global amount=0
+global person=0
+global credit={}
+global debit={}
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -30,7 +30,7 @@ def summary(message):
 
 @bot.message_handler(commands=['help'])
 def send_help(message):
-	bot.reply_to(message, "wiki are for noob")
+	bot.reply_to(message, "wiki are for noobs")
 
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
