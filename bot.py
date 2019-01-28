@@ -3,10 +3,10 @@ import time
 
 TOKEN = '766072158:AAHbGg4FynSbXDQAqLkdTfouHkjhMKvh--k'
 
-global amount=0
-global person=0
-global credit={}
-global debit={}
+amount=0
+person=0
+credit={}
+debit={}
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -17,6 +17,7 @@ def send_reset(message):
 
 @bot.message_handler(commands=['join'])
 def add(message):
+	global person
 	cid = message.chat.id
 	credit[cid] = 0
 	debit[cid] = 0
