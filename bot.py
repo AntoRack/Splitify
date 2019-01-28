@@ -26,7 +26,7 @@ def add(message):
 @bot.message_handler(commands=['summary'])
 def summary(message):
 	summ= "Amount:"+str(amount)+"	person:"+str(person)+" credit:"+str(credit)+"	debit:"+str(debit)
-	bot.reply_to(message,str)
+	bot.reply_to(message,summ)
 
 @bot.message_handler(commands=['help'])
 def send_help(message):
