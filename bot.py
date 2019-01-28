@@ -24,7 +24,7 @@ def send_reset(message):
 def join(message):
 	try:
 		name=message.from_user.username
-		cid = message.chat.id
+		cid = message.from_user.id
 		credits[cid] = 0
 		names[cid]=name
 		bot.reply_to(message, "Welcome "+str(name)+"!")
@@ -38,7 +38,7 @@ def summary(message):
 		quote=amount/person
 		summ= "Amount:"+str(amount)+"\n quote:"+str(quote)+"\n credit:"+str(credits)
 		for k,v in credits.items():
-				summ+=str(names[k])+": "+str(v-quote)
+				summ+="\n"+str(names[k])+": "+str(v-quote)
 		bot.reply_to(message,summ)
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
@@ -48,9 +48,7 @@ def summary(message):
 def send_help(message):
 	bot.reply_to(message, "wiki are for noobs")
 
-@bot.message_handler(func=lambda message: True)
-def echo_all(message):
-	bot.reply_to(message, message.text)
+
 
 
 def extract_arg(arg):
@@ -61,7 +59,7 @@ def extract_arg(arg):
 
 @bot.message_handler(commands=['add'])
 def add(message):
-	cid = message.chat.id
+	cid = message.from_user.id
 	try:
 		charge = extract_arg(message.text)
 		charge=abs(charge)
@@ -104,6 +102,10 @@ def resetHistory(message):
 		bot.reply_to(message, "Some memories are best forgotten!")	
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
+
+@bot.message_handler(func=lambda message: True)
+def echo_all(message):
+	bot.reply_to(message, message.text)
 
 @bot.message_handler(commands=[''])
 def send_welcome(message):
