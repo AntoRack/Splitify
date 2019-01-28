@@ -65,7 +65,7 @@ def add(message):
 		charge=abs(charge)
 		if isinstance(charge,float):
 			credits[cid] +=charge
-			history.append(str(cid)+"add "+str(charge))
+			history.append(str(names[cid])+"add :"+str(charge))
 			bot.reply_to(message, "Added!")
 		else:
 			shopping_list.add(message)
@@ -80,7 +80,7 @@ def getHistory(message):
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
 
-@bot.message_handler(commands=['resetShoppingList'])
+@bot.message_handler(commands=['resetshoppinglist'])
 def resetShoppingList(message):
 	try:
 		shopping_list=set()
@@ -88,14 +88,14 @@ def resetShoppingList(message):
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
 
-@bot.message_handler(commands=['getShoppingList'])
+@bot.message_handler(commands=['getshoppinglist'])
 def getShoppingList(message):
 	try:
 		bot.reply_to(message, str(shopping_list))	
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
 
-@bot.message_handler(commands=['resetHistory'])
+@bot.message_handler(commands=['resethistory'])
 def resetHistory(message):
 	try:
 		history=[]
