@@ -25,7 +25,7 @@ def add(message):
 
 @bot.message_handler(commands=['summary'])
 def summary(message):
-	str= "Amount:"+amount+"	person:"+person+" credit:"+credit+"	debit:"+debit
+	summ= "Amount:"+str(amount)+"	person:"+str(person)+" credit:"+str(credit)+"	debit:"+str(debit)
 	bot.reply_to(message,str)
 
 @bot.message_handler(commands=['help'])
@@ -38,7 +38,6 @@ def echo_all(message):
 
 @bot.message_handler(commands=[''])
 def send_welcome(message):
-	person+=1
 	bot.reply_to(message, "")
 
 bot.polling()
