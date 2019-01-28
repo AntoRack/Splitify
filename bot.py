@@ -22,7 +22,7 @@ def add(message):
 	credit[cid] = 0
 	debit[cid] = 0
 	person+=1
-	bot.reply_to(message, "Welcome"+ message.from_user)
+	bot.reply_to(message, "Welcome")
 
 @bot.message_handler(commands=['summary'])
 def summary(message):
