@@ -16,7 +16,8 @@ def send_reset(message):
 	try:
 		global amount
 		amount=0
-
+		for k,v in credits.items():
+				credits[k]=0
 		bot.reply_to(message, "'A man remember his debts'")
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
