@@ -60,16 +60,22 @@ def extract_arg(arg):
 @bot.message_handler(commands=['add'])
 def add(message):
 	cid = message.from_user.id
+	name=message.from_user.username
+
 	try:
-		charge = extract_arg(message.text)
-		charge=abs(charge)
-		if isinstance(charge,float):
+		charge = message.text.split()[1]
+		try:
+			charge= round(abs(float(charge)),2)
 			credits[cid] +=charge
-			history.append(str(names[cid])+"add :"+str(charge))
-			bot.reply_to(message, "Added!")
-		else:
-			shopping_list.add(message)
-			
+			x = "%.2f" % charge
+			response = str(name)+" add :"+x+"€"
+			history.append(response)
+			bot.reply_to(message, response)
+		except ValueError:
+			element = message.split(' ', 1)[1]
+			shopping_list.add(element)
+			resp=str(name)+" added "+element+" to shopping list!"
+			bot.reply_to(message, resp)
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
 
@@ -80,7 +86,7 @@ def getHistory(message):
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
 
-@bot.message_handler(commands=['resetshoppinglist'])
+@bot.message_handler(commands=['reset_shopping_list'])
 def resetShoppingList(message):
 	try:
 		shopping_list=set()
@@ -88,14 +94,14 @@ def resetShoppingList(message):
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
 
-@bot.message_handler(commands=['getshoppinglist'])
+@bot.message_handler(commands=['shopping_list'])
 def getShoppingList(message):
 	try:
 		bot.reply_to(message, str(shopping_list))	
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
 
-@bot.message_handler(commands=['resethistory'])
+@bot.message_handler(commands=['reset_history'])
 def resetHistory(message):
 	try:
 		history=[]
