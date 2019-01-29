@@ -72,7 +72,7 @@ def add(message):
 			history.append(response)
 			bot.reply_to(message, response)
 		except ValueError:
-			element = message.split(' ', 1)[1]
+			element = message.text.split(' ', 1)[1]
 			shopping_list.add(element)
 			resp=str(name)+" added "+element+" to shopping list!"
 			bot.reply_to(message, resp)
