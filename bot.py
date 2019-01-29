@@ -42,7 +42,9 @@ def summary(message):
 		quote=amount/person
 		summ= "Amount:"+str(amount)+"\nQuote:"+str(quote)+"\nCredit:"+str(credits)+"\n\n"
 		for k,v in credits.items():
-				summ+="\n"+str(names[k])+": "+str(v-quote)
+				x=v-quote
+				x = "%.2f" % x
+				summ+="\n"+str(names[k])+": "+x+"€"
 		bot.reply_to(message,summ)
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
