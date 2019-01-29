@@ -15,7 +15,9 @@ bot = telebot.TeleBot(TOKEN)
 def send_reset(message):
 	try:
 		global amount
+		global history
 		amount=0
+		history=[]
 		for k,v in credits.items():
 				credits[k]=0
 		bot.reply_to(message, "'A man remember his debts'")
