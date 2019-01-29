@@ -16,11 +16,12 @@ def send_reset(message):
 	try:
 		global amount
 		amount=0
+
 		bot.reply_to(message, "'A man remember his debts'")
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
 			
-@bot.message_handler(commands=['join'])
+@bot.message_handler(commands=['join','start'])
 def join(message):
 	try:
 		name=message.from_user.username
@@ -36,7 +37,7 @@ def summary(message):
 	try:
 		person=len(credits)
 		quote=amount/person
-		summ= "Amount:"+str(amount)+"\n quote:"+str(quote)+"\n credit:"+str(credits)
+		summ= "Amount:"+str(amount)+"\nQuote:"+str(quote)+"\nCredit:"+str(credits)+"\n\n"
 		for k,v in credits.items():
 				summ+="\n"+str(names[k])+": "+str(v-quote)
 		bot.reply_to(message,summ)
@@ -61,12 +62,13 @@ def extract_arg(arg):
 def add(message):
 	cid = message.from_user.id
 	name=message.from_user.username
-
+	global amount
 	try:
 		charge = message.text.split()[1]
 		try:
 			charge= round(abs(float(charge)),2)
 			credits[cid] +=charge
+			amount+=charge
 			x = "%.2f" % charge
 			response = str(name)+" add :"+x+"€"
 			history.append(response)
@@ -89,6 +91,7 @@ def getHistory(message):
 @bot.message_handler(commands=['reset_shopping_list'])
 def resetShoppingList(message):
 	try:
+		global shopping_list
 		shopping_list=set()
 		bot.reply_to(message, "Shopping list has been emptied!")	
 	except Exception:
@@ -104,6 +107,7 @@ def getShoppingList(message):
 @bot.message_handler(commands=['reset_history'])
 def resetHistory(message):
 	try:
+		global history
 		history=[]
 		bot.reply_to(message, "Some memories are best forgotten!")	
 	except Exception:
