@@ -40,7 +40,7 @@ def summary(message):
 	try:
 		person=len(credits)
 		quote=amount/person
-		summ= "🛒 Amount:"+str(amount)+"\n💰 Quote:"+str(quote)+"\n📒 Credit:"+str(credits)+"\n\n"
+		summ= "🛒 Amount:"+"%.2f" % amount+"\n💰 Quote:"+"%.2f" % quote+"\n📒 Credit:"+str(credits)+"\n\n"
 		for k,v in credits.items():
 				x=v-quote
 				if(x>0):
@@ -75,13 +75,13 @@ def add(message):
 			credits[cid] +=charge
 			amount+=charge
 			x = "%.2f" % charge
-			response ="💳"+ str(name)+" add :"+x+"€"
-			history.append(response)
+			response ="💳 "+ str(name)+" add :"+x+"€"
+			history.append(str(name)+" add :"+x+"€")
 			bot.reply_to(message, response)
 		except ValueError:
 			element = message.text.split(' ', 1)[1]
 			shopping_list.add(element)
-			resp="🧾"+ str(name)+" added "+element+" to shopping list!"
+			resp="🧾 "+ str(name)+" added "+element+" to shopping list!"
 			bot.reply_to(message, resp)
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
@@ -89,7 +89,9 @@ def add(message):
 @bot.message_handler(commands=['history'])
 def getHistory(message):
 	try:
+		resp="🗃  History:\n- "+'\n- '.join(map(str, history))
 		bot.reply_to(message, str(history))	
+
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
 
@@ -105,7 +107,7 @@ def resetShoppingList(message):
 @bot.message_handler(commands=['shopping_list'])
 def getShoppingList(message):
 	try:
-		resp="🛒 This is your shopping list:\n- "+'\n-'.join(map(str, shopping_list))
+		resp="🛒 This is your shopping list:\n- "+'\n- '.join(map(str, shopping_list))
 		bot.reply_to(message,resp)	
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
