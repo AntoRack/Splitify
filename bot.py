@@ -40,10 +40,16 @@ def summary(message):
 	try:
 		person=len(credits)
 		quote=amount/person
-		summ= "Amount:"+str(amount)+"\nQuote:"+str(quote)+"\nCredit:"+str(credits)+"\n\n"
+		summ= "🛒 Amount:"+str(amount)+"\n💰 Quote:"+str(quote)+"\n📒 Credit:"+str(credits)+"\n\n"
 		for k,v in credits.items():
 				x=v-quote
-				x = "%.2f" % x
+				if(x>0):
+					x = "🔼"+"%.2f" % x
+				else:
+					if(x==0.00):
+						x = "🔽"+"%.2f" % x
+					else:
+						x = "🔽"+"%.2f" % x
 				summ+="\n"+str(names[k])+": "+x+"€"
 		bot.reply_to(message,summ)
 	except Exception:
@@ -57,12 +63,6 @@ def send_help(message):
 
 
 
-def extract_arg(arg):
-	try:
-		return arg.split()[1:]
-	except Exception:
-		print ("Unexpected error")
-
 @bot.message_handler(commands=['add'])
 def add(message):
 	cid = message.from_user.id
@@ -75,13 +75,13 @@ def add(message):
 			credits[cid] +=charge
 			amount+=charge
 			x = "%.2f" % charge
-			response = str(name)+" add :"+x+"€"
+			response ="💳"+ str(name)+" add :"+x+"€"
 			history.append(response)
 			bot.reply_to(message, response)
 		except ValueError:
 			element = message.text.split(' ', 1)[1]
 			shopping_list.add(element)
-			resp=str(name)+" added "+element+" to shopping list!"
+			resp="🧾"+ str(name)+" added "+element+" to shopping list!"
 			bot.reply_to(message, resp)
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
@@ -105,7 +105,8 @@ def resetShoppingList(message):
 @bot.message_handler(commands=['shopping_list'])
 def getShoppingList(message):
 	try:
-		bot.reply_to(message, str(shopping_list))	
+		resp="🛒 This is your shopping list:\n- "+'\n-'.join(map(str, shopping_list))
+		bot.reply_to(message,resp)	
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
 
