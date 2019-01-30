@@ -29,6 +29,9 @@ def join(message):
 	try:
 		name=message.from_user.username
 		cid = message.from_user.id
+		if cid in credits.keys():
+			bot.reply_to(message, "I remember you "+str(name)+"!")
+			return
 		credits[cid] = 0
 		names[cid]=name
 		bot.reply_to(message, "Welcome "+str(name)+"!")
@@ -40,17 +43,17 @@ def summary(message):
 	try:
 		person=len(credits)
 		quote=amount/person
-		summ= "🛒 Amount:"+"%.2f" % amount+"\n💰 Quote:"+"%.2f" % quote+"\n📒 Credit:"+str(credits)+"\n\n"
+		summ= "🛒 Amount:\t"+"%.2f" % amount+"\n\n💰 Quote:\t"+"%.2f" % quote+"\n\n📒 Credit:"+str(credits)+"\n\n\n"
 		for k,v in credits.items():
 				x=v-quote
 				if(x>0):
 					x = "🔼"+"%.2f" % x
 				else:
-					if(x==0.00):
+					if(x<0):
 						x = "🔽"+"%.2f" % x
 					else:
-						x = "🔽"+"%.2f" % x
-				summ+="\n"+str(names[k])+": "+x+"€"
+						x = "✔️"+"%.2f" % x
+				summ+="\n"+str(names[k])+":\t\t"+x+"€"
 		bot.reply_to(message,summ)
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
@@ -69,27 +72,31 @@ def add(message):
 	name=message.from_user.username
 	global amount
 	try:
-		charge = message.text.split()[1]
-		try:
-			charge= round(abs(float(charge)),2)
-			credits[cid] +=charge
-			amount+=charge
-			x = "%.2f" % charge
-			response ="💳 "+ str(name)+" add :"+x+"€"
-			history.append(str(name)+" add :"+x+"€")
-			bot.reply_to(message, response)
-		except ValueError:
-			element = message.text.split(' ', 1)[1]
-			shopping_list.add(element)
-			resp="🧾 "+ str(name)+" added "+element+" to shopping list!"
-			bot.reply_to(message, resp)
+		if (cid in credits.keys()):
+			charge = message.text.split()[1]
+			try:
+				charge= round(abs(float(charge)),2)
+				credits[cid] +=charge
+				amount+=charge
+				x = "%.2f" % charge
+				response ="💳 "+ str(name)+" add :"+x+"€"
+				history.append(str(name)+" add :"+x+"€")
+				bot.reply_to(message, response)
+			except ValueError:
+				element = message.text.split(' ', 1)[1]
+				shopping_list.add(element)
+				resp="🧾 "+ str(name)+" added "+element+" to shopping list!"
+				bot.reply_to(message, resp)
+		else:
+			bot.reply_to(message, "You should join first!")
+			return
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
 
 @bot.message_handler(commands=['history'])
 def getHistory(message):
 	try:
-		resp="🗃  History:\n- "+'\n- '.join(map(str, history))
+		resp="🗃  History:\n\n- "+'\n- '.join(map(str, history))
 		bot.reply_to(message, str(history))	
 
 	except Exception:
@@ -107,7 +114,7 @@ def resetShoppingList(message):
 @bot.message_handler(commands=['shopping_list'])
 def getShoppingList(message):
 	try:
-		resp="🛒 This is your shopping list:\n- "+'\n- '.join(map(str, shopping_list))
+		resp="🛒 This is your shopping list:\n\n- "+'\n- '.join(map(str, shopping_list))
 		bot.reply_to(message,resp)	
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
