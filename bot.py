@@ -43,7 +43,7 @@ def summary(message):
 	try:
 		person=len(credits)
 		quote=amount/person
-		summ= "🛒 Amount:\t"+"%.2f" % amount+"\n\n💰 Quote:\t"+"%.2f" % quote+"\n\n📒 Credit:"+str(credits)+"\n\n\n"
+		summ= "🛒 Amount:\t\t"+"%.2f" % amount+"€\n\n💰 Quote:\t\t"+"%.2f" % quote+"€\n\n📒 Credit:"+str(credits)+"\n\n\n"
 		for k,v in credits.items():
 				x=v-quote
 				if(x>0):
@@ -97,7 +97,7 @@ def add(message):
 def getHistory(message):
 	try:
 		resp="🗃  History:\n\n- "+'\n- '.join(map(str, history))
-		bot.reply_to(message, str(history))	
+		bot.reply_to(message, resp)	
 
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
