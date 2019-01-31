@@ -119,9 +119,10 @@ def add(message):
 	
 		if (cid in gr.credits.keys()):
 			charge = message.text.split()[1]
-			causal=message.text.split(' ',1)[1].split(' ',1)[1]
+			
 			try:
 				charge= round(abs(float(charge)),2)
+				causal=message.text.split(' ',1)[1].split(' ',1)[1]
 				gr.credits[cid] +=charge
 				gr.amount+=charge
 				x = "%.2f" % charge
