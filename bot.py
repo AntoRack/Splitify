@@ -28,8 +28,15 @@ def send_reset(message):
 		if(groupsDoesntExist(message)):
 			bot.reply_to(message, "You should join first!")
 			return
+		
+		cid = message.from_user.id
 		gid=message.chat.id
 		gr=groups.get(gid)
+	
+		if (not cid in gr.credits.keys()):
+			bot.reply_to(message, "You should join first!")
+			return
+		
 		gr.amount=0
 		gr.history=[]
 		for k,v in gr.credits.items():
@@ -131,8 +138,16 @@ def getHistory(message):
 		if(groupsDoesntExist(message)):
 			bot.reply_to(message, "You should join first!")
 			return
+		
+		cid = message.from_user.id
 		gid=message.chat.id
 		gr=groups.get(gid)
+	
+		if (not cid in gr.credits.keys()):
+			bot.reply_to(message, "You should join first!")
+			return
+
+
 		resp="🗃  History:\n\n- "+'\n- '.join(map(str, gr.history))
 		bot.reply_to(message, resp)	
 
@@ -146,8 +161,14 @@ def resetShoppingList(message):
 		if(groupsDoesntExist(message)):
 			bot.reply_to(message, "You should join first!")
 			return
+		
+		cid = message.from_user.id
 		gid=message.chat.id
 		gr=groups.get(gid)
+	
+		if (not cid in gr.credits.keys()):
+			bot.reply_to(message, "You should join first!")
+			return
 		gr.shopping_list=set()
 		bot.reply_to(message, "Shopping list has been emptied!")	
 	except Exception as e:
@@ -160,8 +181,17 @@ def getShoppingList(message):
 		if(groupsDoesntExist(message)):
 			bot.reply_to(message, "You should join first!")
 			return
+		
+
+		cid = message.from_user.id
 		gid=message.chat.id
 		gr=groups.get(gid)
+	
+		if (not cid in gr.credits.keys()):
+			bot.reply_to(message, "You should join first!")
+			return
+		
+		
 		resp="🛒 This is your shopping list:\n\n- "+'\n- '.join(map(str, gr.shopping_list))
 		bot.reply_to(message,resp)	
 	except Exception as e:
