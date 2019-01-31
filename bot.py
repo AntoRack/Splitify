@@ -3,12 +3,9 @@ import time
 
 TOKEN = '766072158:AAHbGg4FynSbXDQAqLkdTfouHkjhMKvh--k'
 
-
-
 bot = telebot.TeleBot(TOKEN)
 groups={}
 names={}
-
 class GroupData:
 	   # constructor
 	def __init__(self):
@@ -61,7 +58,7 @@ def join(message):
 		names[cid]=name
 		bot.reply_to(message, "Welcome "+str(name)+"!")
 	except Exception as e:
-			print(e):
+			print(e)
 			bot.reply_to(message, "there was an exception!")
 
 @bot.message_handler(commands=['summary'])
@@ -94,8 +91,6 @@ def summary(message):
 @bot.message_handler(commands=['help'])
 def send_help(message):
 	bot.reply_to(message, "wiki are for noobs")
-
-
 
 
 @bot.message_handler(commands=['add'])
@@ -142,7 +137,7 @@ def getHistory(message):
 		bot.reply_to(message, resp)	
 
 	except Exception as e:
-			print(e):
+			print(e)
 			bot.reply_to(message, "there was an exception!")
 
 @bot.message_handler(commands=['reset_shopping_list'])
