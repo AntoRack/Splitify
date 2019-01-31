@@ -109,7 +109,6 @@ def send_help(message):
 			for k,v in groups.items():
 				bot.send_message(k, payload)
 
-
 @bot.message_handler(commands=['add'])
 def add(message):
 	try:
