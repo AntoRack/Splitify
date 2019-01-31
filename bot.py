@@ -16,7 +16,11 @@ class GroupData:
 	shopping_list=set()
 
 def groupsDoesntExist(message):
-	bot.reply_to(message, "")
+	gid=message.chat.id
+	if gid in groups.keys():
+		return True
+	else:
+		return False
 
 @bot.message_handler(commands=['reset'])
 def send_reset(message):
@@ -61,8 +65,6 @@ def summary(message):
 		if(groupsDoesntExist(message)):
 			bot.reply_to(message, "You should join first!")
 			return
-		name=message.from_user.username
-		cid = message.from_user.id
 		gid=message.chat.id
 		gr=groups[gid]
 		person=len(gr.credits)
