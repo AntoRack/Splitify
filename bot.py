@@ -38,7 +38,8 @@ def send_reset(message):
 		for k,v in gr.credits.items():
 				gr.credits[k]=0
 		bot.reply_to(message, "'A man remember his debts'")
-	except Exception:
+	except Exception as e:
+			print(e)
 			bot.reply_to(message, "there was an exception!")
 			
 @bot.message_handler(commands=['join','start'])
@@ -59,7 +60,8 @@ def join(message):
 		gr.credits[cid] = 0
 		names[cid]=name
 		bot.reply_to(message, "Welcome "+str(name)+"!")
-	except Exception:
+	except Exception as e:
+			print(e):
 			bot.reply_to(message, "there was an exception!")
 
 @bot.message_handler(commands=['summary'])
@@ -84,7 +86,8 @@ def summary(message):
 						x = "✔️"+"%.2f" % x
 				summ+="\n\n"+str(names[k])+":\t\t"+x+"€"
 		bot.reply_to(message,summ)
-	except Exception:
+	except Exception as e:
+			print(e)
 			bot.reply_to(message, "there was an exception!")
 
 
@@ -138,7 +141,8 @@ def getHistory(message):
 		resp="🗃  History:\n\n- "+'\n- '.join(map(str, gr.history))
 		bot.reply_to(message, resp)	
 
-	except Exception:
+	except Exception as e:
+			print(e):
 			bot.reply_to(message, "there was an exception!")
 
 @bot.message_handler(commands=['reset_shopping_list'])
@@ -151,7 +155,8 @@ def resetShoppingList(message):
 		gr=groups.get(gid)
 		gr.shopping_list=set()
 		bot.reply_to(message, "Shopping list has been emptied!")	
-	except Exception:
+	except Exception as e:
+			print(e)
 			bot.reply_to(message, "there was an exception!")
 
 @bot.message_handler(commands=['shopping_list'])
@@ -164,7 +169,8 @@ def getShoppingList(message):
 		gr=groups.get(gid)
 		resp="🛒 This is your shopping list:\n\n- "+'\n- '.join(map(str, gr.shopping_list))
 		bot.reply_to(message,resp)	
-	except Exception:
+	except Exception as e:
+			print(e)
 			bot.reply_to(message, "there was an exception!")
 
 
