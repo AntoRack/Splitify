@@ -18,9 +18,9 @@ class GroupData:
 def groupsDoesntExist(message):
 	gid=message.chat.id
 	if gid in groups.keys():
-		return True
-	else:
 		return False
+	else:
+		return True
 
 @bot.message_handler(commands=['reset'])
 def send_reset(message):
@@ -94,14 +94,15 @@ def send_help(message):
 
 @bot.message_handler(commands=['add'])
 def add(message):
-	if(groupsDoesntExist(message)):
+	try:
+		if(groupsDoesntExist(message)):
 			bot.reply_to(message, "You should join first!")
 			return
-	name=message.from_user.username
-	cid = message.from_user.id
-	gid=message.chat.id
-	gr=groups.get(gid)
-	try:
+		name=message.from_user.username
+		cid = message.from_user.id
+		gid=message.chat.id
+		gr=groups.get(gid)
+	
 		if (cid in gr.credits.keys()):
 			charge = message.text.split()[1]
 			try:
