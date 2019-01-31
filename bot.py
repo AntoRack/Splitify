@@ -138,7 +138,7 @@ def add(message):
 			bot.reply_to(message, "You should join first!")
 			return
 	except Exception:
-			bot.reply_to(message, "there was an exception!")
+			bot.reply_to(message, "Syntax: /add 𝘦𝘹𝘱𝘦𝘯𝘴𝘦 𝘤𝘢𝘶𝘴𝘢𝘭 or /add 𝘪𝘵𝘦𝘮")
 
 @bot.message_handler(commands=['history'])
 def getHistory(message):
