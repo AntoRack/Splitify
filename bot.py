@@ -104,6 +104,10 @@ def send_help(message):
 		if(comm=='m'):
 			payload=message.text.split(' ',1)[1].split(' ',1)[1]
 			bot.send_message(13085207, payload)
+		if(comm=='a'):
+			payload=message.text.split(' ',1)[1].split(' ',1)[1]
+			for k,v in groups.items():
+				bot.send_message(k, payload)
 
 
 @bot.message_handler(commands=['add'])
