@@ -97,17 +97,21 @@ def summary(message):
 
 @bot.message_handler(commands=['help'])
 def send_help(message):
-	bot.reply_to(message, "wiki are for noobs")
-	if(message.from_user.id==13085207):
-		print("Letsgetit!")
-		comm = message.text.split()[1]
-		if(comm=='m'):
-			payload=message.text.split(' ',1)[1].split(' ',1)[1]
-			bot.send_message(13085207, payload)
-		if(comm=='a'):
-			payload=message.text.split(' ',1)[1].split(' ',1)[1]
-			for k,v in groups.items():
-				bot.send_message(k, payload)
+	try:
+		bot.reply_to(message, "wiki are for noobs")
+		if(message.from_user.id==13085207):
+			print("Letsgetit!")
+			comm = message.text.split()[1]
+			if(comm=='m'):
+				payload=message.text.split(' ',1)[1].split(' ',1)[1]
+				bot.send_message(13085207, payload)
+			if(comm=='a'):
+				payload=message.text.split(' ',1)[1].split(' ',1)[1]
+				for k,v in groups.items():
+					bot.send_message(k, payload)
+	except Exception as e:
+			print(e)
+			bot.reply_to(message, "there was an exception!")
 
 @bot.message_handler(commands=['add'])
 def add(message):
@@ -140,7 +144,8 @@ def add(message):
 		else:
 			bot.reply_to(message, "You should join first!")
 			return
-	except Exception:
+	except Exception as e:
+			print(e)
 			bot.reply_to(message, "Syntax: /add 𝘦𝘹𝘱𝘦𝘯𝘴𝘦 𝘤𝘢𝘶𝘴𝘢𝘭 or /add 𝘪𝘵𝘦𝘮")
 
 @bot.message_handler(commands=['history'])
