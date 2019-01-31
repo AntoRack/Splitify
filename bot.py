@@ -50,7 +50,7 @@ def join(message):
 			groups[gid]=newGroup
 		else:#group exist
 			gr=groups.get(gid)
-			if gr.cid in gr.credits.keys():
+			if cid in gr.credits.keys():
 				bot.reply_to(message, "I remember you "+str(name)+"!")
 				return
 		gr=groups.get(gid)
