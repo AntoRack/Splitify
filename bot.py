@@ -52,7 +52,7 @@ def join(message):
 			if gr.cid in gr.credits.keys():
 				bot.reply_to(message, "I remember you "+str(name)+"!")
 				return
-		#join in existing grp
+		gr=groups.get(gid)
 		gr.credits[cid] = 0
 		names[cid]=name
 		bot.reply_to(message, "Welcome "+str(name)+"!")
