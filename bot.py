@@ -69,7 +69,7 @@ def summary(message):
 		gr=groups.get(gid)
 		person=len(gr.credits)
 		quote=gr.amount/person
-		summ= "🛒 Amount:\t\t"+"%.2f" % gr.amount+"€\n\n💰 Quote:\t\t"+"%.2f" % gr.quote+"€\n\n📒 Credit:"+str(gr.credits)+"\n\n\n"
+		summ= "🛒 Amount:\t\t"+"%.2f" % gr.amount+"€\n\n💰 Quote:\t\t"+"%.2f" % quote+"€\n\n📒 Credit:"+str(gr.credits)+"\n\n\n"
 		for k,v in gr.credits.items():
 				x=v-quote
 				if(x>0):
