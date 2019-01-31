@@ -3,23 +3,34 @@ import time
 
 TOKEN = '766072158:AAHbGg4FynSbXDQAqLkdTfouHkjhMKvh--k'
 
-amount=0
-credits={}
-names={}
-history=[]
-shopping_list=set()
+
 
 bot = telebot.TeleBot(TOKEN)
+groups={}
+names={}
+
+class GroupData:
+	def __init__():
+		amount=0
+		credits={}
+		history=[]
+		shopping_list=set()
+
+def groupsDoesntExist(message):
+	bot.reply_to(message, "")
 
 @bot.message_handler(commands=['reset'])
 def send_reset(message):
 	try:
-		global amount
-		global history
-		amount=0
-		history=[]
-		for k,v in credits.items():
-				credits[k]=0
+		if(groupsDoesntExist(message)):
+			bot.reply_to(message, "You should join first!")
+			return
+		gid=message.chat.id
+		gr=groups[gid]
+		gr.amount=0
+		gr.history=[]
+		for k,v in gr.credits.items():
+				gr.credits[k]=0
 		bot.reply_to(message, "'A man remember his debts'")
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
@@ -27,12 +38,19 @@ def send_reset(message):
 @bot.message_handler(commands=['join','start'])
 def join(message):
 	try:
+		gid=message.chat.id
 		name=message.from_user.username
 		cid = message.from_user.id
-		if cid in credits.keys():
-			bot.reply_to(message, "I remember you "+str(name)+"!")
-			return
-		credits[cid] = 0
+		if(groupsDoesntExist(message)):
+			newGroup=GroupData()
+			groups[gid]=newGroup
+		else:#group exist
+			gr=groups[gid]
+			if gr.cid in gr.credits.keys():
+				bot.reply_to(message, "I remember you "+str(name)+"!")
+				return
+		#join in existing grp
+		gr.credits[cid] = 0
 		names[cid]=name
 		bot.reply_to(message, "Welcome "+str(name)+"!")
 	except Exception:
@@ -41,10 +59,17 @@ def join(message):
 @bot.message_handler(commands=['summary'])
 def summary(message):
 	try:
-		person=len(credits)
-		quote=amount/person
-		summ= "🛒 Amount:\t\t"+"%.2f" % amount+"€\n\n💰 Quote:\t\t"+"%.2f" % quote+"€\n\n📒 Credit:"+str(credits)+"\n\n\n"
-		for k,v in credits.items():
+		if(groupsDoesntExist(message)):
+			bot.reply_to(message, "You should join first!")
+			return
+		name=message.from_user.username
+		cid = message.from_user.id
+		gid=message.chat.id
+		gr=groups[gid]
+		person=len(gr.credits)
+		quote=gr.amount/person
+		summ= "🛒 Amount:\t\t"+"%.2f" % gr.amount+"€\n\n💰 Quote:\t\t"+"%.2f" % gr.quote+"€\n\n📒 Credit:"+str(gr.credits)+"\n\n\n"
+		for k,v in gr.credits.items():
 				x=v-quote
 				if(x>0):
 					x = "🔼"+"%.2f" % x
@@ -68,19 +93,23 @@ def send_help(message):
 
 @bot.message_handler(commands=['add'])
 def add(message):
-	cid = message.from_user.id
+	if(groupsDoesntExist(message)):
+			bot.reply_to(message, "You should join first!")
+			return
 	name=message.from_user.username
-	global amount
+	cid = message.from_user.id
+	gid=message.chat.id
+	gr=groups[gid]
 	try:
-		if (cid in credits.keys()):
+		if (cid in gr.credits.keys()):
 			charge = message.text.split()[1]
 			try:
 				charge= round(abs(float(charge)),2)
-				credits[cid] +=charge
-				amount+=charge
+				gr.credits[cid] +=charge
+				gr.amount+=charge
 				x = "%.2f" % charge
-				response ="💳 "+ str(name)+" add :"+x+"€"
-				history.append(str(name)+" add :"+x+"€")
+				response ="💳 "+ str(name)+" add : "+x+"€"
+				history.append(str(name)+" add : "+x+"€")
 				bot.reply_to(message, response)
 			except ValueError:
 				element = message.text.split(' ', 1)[1]
@@ -96,7 +125,12 @@ def add(message):
 @bot.message_handler(commands=['history'])
 def getHistory(message):
 	try:
-		resp="🗃  History:\n\n- "+'\n- '.join(map(str, history))
+		if(groupsDoesntExist(message)):
+			bot.reply_to(message, "You should join first!")
+			return
+		gid=message.chat.id
+		gr=groups[gid]
+		resp="🗃  History:\n\n- "+'\n- '.join(map(str, gr.history))
 		bot.reply_to(message, resp)	
 
 	except Exception:
@@ -105,8 +139,12 @@ def getHistory(message):
 @bot.message_handler(commands=['reset_shopping_list'])
 def resetShoppingList(message):
 	try:
-		global shopping_list
-		shopping_list=set()
+		if(groupsDoesntExist(message)):
+			bot.reply_to(message, "You should join first!")
+			return
+		gid=message.chat.id
+		gr=groups[gid]
+		gr.shopping_list=set()
 		bot.reply_to(message, "Shopping list has been emptied!")	
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
@@ -114,19 +152,17 @@ def resetShoppingList(message):
 @bot.message_handler(commands=['shopping_list'])
 def getShoppingList(message):
 	try:
-		resp="🛒 This is your shopping list:\n\n- "+'\n- '.join(map(str, shopping_list))
+		if(groupsDoesntExist(message)):
+			bot.reply_to(message, "You should join first!")
+			return
+		gid=message.chat.id
+		gr=groups[gid]
+		resp="🛒 This is your shopping list:\n\n- "+'\n- '.join(map(str, gr.shopping_list))
 		bot.reply_to(message,resp)	
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
 
-@bot.message_handler(commands=['reset_history'])
-def resetHistory(message):
-	try:
-		global history
-		history=[]
-		bot.reply_to(message, "Some memories are best forgotten!")	
-	except Exception:
-			bot.reply_to(message, "there was an exception!")
+
 
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
