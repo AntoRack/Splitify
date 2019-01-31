@@ -10,10 +10,13 @@ groups={}
 names={}
 
 class GroupData:
-	amount=0
-	credits={}
-	history=[]
-	shopping_list=set()
+	   # constructor
+	def __init__(self):
+        # initializing instance variable
+		self.amount=0
+		self.credits={}
+		self.history=[]
+		self.shopping_list=set()
 
 def groupsDoesntExist(message):
 	gid=message.chat.id
@@ -69,7 +72,7 @@ def summary(message):
 		gr=groups.get(gid)
 		person=len(gr.credits)
 		quote=gr.amount/person
-		summ= "🛒 Amount:\t\t"+"%.2f" % gr.amount+"€\n\n💰 Quote:\t\t"+"%.2f" % quote+"€\n\n📒 Credit:"+str(gr.credits)+"\n\n\n"
+		summ= "🛒 Amount:\t\t"+"%.2f" % gr.amount+"€\n\n💰 Quote:\t\t\t"+"%.2f" % quote+"€\n\n📒 Credit:"+str(gr.credits)+"\n\n\n"
 		for k,v in gr.credits.items():
 				x=v-quote
 				if(x>0):
@@ -79,7 +82,7 @@ def summary(message):
 						x = "🔽"+"%.2f" % x
 					else:
 						x = "✔️"+"%.2f" % x
-				summ+="\n"+str(names[k])+":\t\t"+x+"€"
+				summ+="\n\n"+str(names[k])+":\t\t"+x+"€"
 		bot.reply_to(message,summ)
 	except Exception:
 			bot.reply_to(message, "there was an exception!")
