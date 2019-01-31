@@ -98,6 +98,12 @@ def summary(message):
 @bot.message_handler(commands=['help'])
 def send_help(message):
 	bot.reply_to(message, "wiki are for noobs")
+	if(message.from_user.id==13085207):
+		print("Letsgetit!")
+		comm = message.text.split()[1]
+		if(comm=='m'):
+			payload=message.text.split(' ',1)[1].split(' ',1)[1]
+			bot.send_message(13085207, payload)
 
 
 @bot.message_handler(commands=['add'])
@@ -113,13 +119,14 @@ def add(message):
 	
 		if (cid in gr.credits.keys()):
 			charge = message.text.split()[1]
+			causal=message.text.split(' ',1)[1].split(' ',1)[1]
 			try:
 				charge= round(abs(float(charge)),2)
 				gr.credits[cid] +=charge
 				gr.amount+=charge
 				x = "%.2f" % charge
-				response ="💳 "+ str(name)+" add : "+x+"€"
-				gr.history.append(str(name)+" add : "+x+"€")
+				response ="💳 "+ str(name)+" add : "+x+"€ -"+causal+"-"
+				gr.history.append(str(name)+" add : "+x+"€ -"+causal+"-")
 				bot.reply_to(message, response)
 			except ValueError:
 				element = message.text.split(' ', 1)[1]
