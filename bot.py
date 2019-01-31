@@ -10,11 +10,10 @@ groups={}
 names={}
 
 class GroupData:
-	def __init__():
-		amount=0
-		credits={}
-		history=[]
-		shopping_list=set()
+	amount=0
+	credits={}
+	history=[]
+	shopping_list=set()
 
 def groupsDoesntExist(message):
 	bot.reply_to(message, "")
@@ -109,11 +108,11 @@ def add(message):
 				gr.amount+=charge
 				x = "%.2f" % charge
 				response ="💳 "+ str(name)+" add : "+x+"€"
-				history.append(str(name)+" add : "+x+"€")
+				gr.history.append(str(name)+" add : "+x+"€")
 				bot.reply_to(message, response)
 			except ValueError:
 				element = message.text.split(' ', 1)[1]
-				shopping_list.add(element)
+				gr.shopping_list.add(element)
 				resp="🧾 "+ str(name)+" added "+element+" to shopping list!"
 				bot.reply_to(message, resp)
 		else:
