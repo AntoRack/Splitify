@@ -98,7 +98,7 @@ def summary(message):
 @bot.message_handler(commands=['help'])
 def send_help(message):
 	try:
-		bot.reply_to(message, "wiki are for noobs")
+		bot.reply_to(message, "Command list:\njoin\n/add\n/history\n/summary\n/reset\n/shopping_list\n/reset_shopping_list")
 		if(message.from_user.id==13085207):
 			print("Letsgetit!")
 			comm = message.text.split()[1]
