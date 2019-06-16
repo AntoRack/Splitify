@@ -179,8 +179,8 @@ def add(message):
                 x = "%.2f" % charge
                 response = "💳 " + str(name)+" add : "+x+"€ -"+causal+"-"
                 gr.history.append(str(name)+" add : "+x+"€ -"+causal+"-")
-                bot.reply_to(message, response)
                 saveDict()
+                bot.reply_to(message, response)
             except ValueError:
                 element = message.text.split(' ', 1)[1]
                 gr.shopping_list.add(element)
@@ -271,6 +271,5 @@ def echo_all(message):
 def send_welcome(message):
     bot.reply_to(message, "")
 
-
-bot.polling()
 restoreDict()
+bot.polling()
