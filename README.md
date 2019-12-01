@@ -1,5 +1,6 @@
 # Spitify
-![](https://github.com/AntoRack/splitify/blob/master/Splitty.png){:height="400px" width="400px"}
+
+<img src="https://github.com/AntoRack/splitify/blob/master/Splitty.png" width="300" height="300">
 
 
 ## Introduction
