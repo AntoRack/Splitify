@@ -186,7 +186,7 @@ def add(message):
             except ValueError:
                 element = message.text.split(' ', 1)[1]
                 gr.shopping_list.add(element)
-                resp = " " + str(name)+" added "+element+" to Shopping list!"
+                resp = "📝 " + str(name)+" added "+element+" to Shopping list!"
                 saveDict()
                 bot.reply_to(message, resp)
         else:
@@ -211,7 +211,7 @@ def remove(message):
             try:
                 element = message.text.split(' ', 1)[1]
                 gr.shopping_list.remove(element)
-                resp = " " + str(name)+" removed "+element+" from Shopping list!"
+                resp = "📝 " + str(name)+" removed "+element+" from Shopping list!"
                 saveDict()
                 bot.reply_to(message, resp)
             except ValueError:
