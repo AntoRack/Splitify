@@ -66,7 +66,7 @@ def restoreDict():
 def send_reset(message):
     try:
         if(groupsDoesntExist(message)):
-            bot.reply_to(message, "You should join first!")
+            bot.reply_to(message, "You should join first!\nUse the /join command!")
             return
 
         cid = message.from_user.id
@@ -74,7 +74,7 @@ def send_reset(message):
         gr = groups.get(gid)
 
         if (not cid in gr.credits.keys()):
-            bot.reply_to(message, "You should join first!")
+            bot.reply_to(message, "You should join first!\nUse the /join command!")
             return
 
         gr.amount = 0
@@ -114,7 +114,7 @@ def join(message):
 def summary(message):
     try:
         if(groupsDoesntExist(message)):
-            bot.reply_to(message, "You should join first!")
+            bot.reply_to(message, "You should join first!\nUse the /join command!")
             return
         gid = message.chat.id
         gr = groups.get(gid)
@@ -142,7 +142,7 @@ def summary(message):
 def send_help(message):
     try:
         bot.reply_to(
-            message, "Command list:\n/join\n/add\n/history\n/summary\n/reset\n/shopping_list\n/reset_shopping_list")
+            message, "Command list:\n/join\n/add\n/history\n/summary\n/reset\n/remove\n/reset_shopping_list")
         if(message.from_user.id == 13085207):
             print("Letsgetit!")
             comm = message.text.split()[1]
@@ -155,14 +155,14 @@ def send_help(message):
                     bot.send_message(k, payload)
     except Exception as e:
         print(e)
-        bot.reply_to(message, "there was an exception!")
+        # bot.reply_to(message, "there was an exception!")
 
 
 @bot.message_handler(commands=['add'])
 def add(message):
     try:
         if(groupsDoesntExist(message)):
-            bot.reply_to(message, "You should join first!")
+            bot.reply_to(message, "You should join first!\nUse the /join command!")
             return
         name = message.from_user.username
         cid = message.from_user.id
@@ -182,25 +182,52 @@ def add(message):
                 gr.history.append(str(name)+" add : "+x+"€ -"+causal+"-")
                 saveDict()
                 bot.reply_to(message, response)
+                return
             except ValueError:
                 element = message.text.split(' ', 1)[1]
                 gr.shopping_list.add(element)
-                resp = "🧾 " + str(name)+" added "+element+" to shopping list!"
+                resp = " " + str(name)+" added "+element+" to Shopping list!"
                 saveDict()
                 bot.reply_to(message, resp)
         else:
-            bot.reply_to(message, "You should join first!")
+            bot.reply_to(message, "You should join first!\nUse the /join command!")
             return
     except Exception as e:
         print(e)
         bot.reply_to(message, "Syntax: /add 𝘦𝘹𝘱𝘦𝘯𝘴𝘦 𝘤𝘢𝘶𝘴𝘢𝘭 or /add 𝘪𝘵𝘦𝘮")
 
+@bot.message_handler(commands=['remove'])
+def remove(message):
+    try:
+        if(groupsDoesntExist(message)):
+            bot.reply_to(message, "You should join first!\nUse the /join command!")
+            return
+        name = message.from_user.username
+        cid = message.from_user.id
+        gid = message.chat.id
+        gr = groups.get(gid)
+
+        if (cid in gr.credits.keys()):
+            try:
+                element = message.text.split(' ', 1)[1]
+                gr.shopping_list.remove(element)
+                resp = " " + str(name)+" removed "+element+" from Shopping list!"
+                saveDict()
+                bot.reply_to(message, resp)
+            except ValueError:
+                bot.reply_to(message, "This item is not present in your Shopping list!")
+        else:
+            bot.reply_to(message, "You should join first!\nUse the /join command!")
+            return
+    except Exception as e:
+        print(e)
+        bot.reply_to(message, "Syntax: /remove 𝘪𝘵𝘦𝘮")
 
 @bot.message_handler(commands=['history'])
 def getHistory(message):
     try:
         if(groupsDoesntExist(message)):
-            bot.reply_to(message, "You should join first!")
+            bot.reply_to(message, "You should join first!\nUse the /join command!")
             return
 
         cid = message.from_user.id
@@ -208,7 +235,7 @@ def getHistory(message):
         gr = groups.get(gid)
 
         if (not cid in gr.credits.keys()):
-            bot.reply_to(message, "You should join first!")
+            bot.reply_to(message, "You should join first!\nUse the /join command!")
             return
 
         resp = "🗃  History:\n\n- "+'\n- '.join(map(str, gr.history))
@@ -223,7 +250,7 @@ def getHistory(message):
 def resetShoppingList(message):
     try:
         if(groupsDoesntExist(message)):
-            bot.reply_to(message, "You should join first!")
+            bot.reply_to(message, "You should join first!\nUse the /join command!")
             return
 
         cid = message.from_user.id
@@ -231,7 +258,7 @@ def resetShoppingList(message):
         gr = groups.get(gid)
 
         if (not cid in gr.credits.keys()):
-            bot.reply_to(message, "You should join first!")
+            bot.reply_to(message, "You should join first!\nUse the /join command!")
             return
         gr.shopping_list = set()
         bot.reply_to(message, "Shopping list has been emptied!")
@@ -244,7 +271,7 @@ def resetShoppingList(message):
 def getShoppingList(message):
     try:
         if(groupsDoesntExist(message)):
-            bot.reply_to(message, "You should join first!")
+            bot.reply_to(message, "You should join first!\nUse the /join command!")
             return
 
         cid = message.from_user.id
@@ -252,10 +279,10 @@ def getShoppingList(message):
         gr = groups.get(gid)
 
         if (not cid in gr.credits.keys()):
-            bot.reply_to(message, "You should join first!")
+            bot.reply_to(message, "You should join first!\nUse the /join command!")
             return
 
-        resp = "🛒 This is your shopping list:\n\n- " + \
+        resp = "🛒 This is your Shopping list:\n\n- " + \
             '\n- '.join(map(str, gr.shopping_list))
         bot.reply_to(message, resp)
     except Exception as e:
